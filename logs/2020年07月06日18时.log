@@ -1,0 +1,2 @@
+{"L":"PANIC","T":"2020-07-06T18:41:03.634+0800","C":"internal_ws/server.go:38","M":"listen tcp :9091: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"L":"ERROR","T":"2020-07-06T18:51:26.787+0800","C":"internal_ws/ctx_conn.go:42","M":"接收失败:read tcp 192.168.1.21:9091->192.168.1.21:60813: i/o timeout"}

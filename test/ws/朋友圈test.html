@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-sGcale=1.0">
+    <script src="./client_message.js"></script>
+    <title>获取用户信息</title>
+</head>
+<body>
+    <button onclick="addtrend()">发朋友圈</button>
+    <button onclick="gettrends()">获取朋友圈列表</button>
+    <button onclick="thumb()">点赞</button>
+    <button onclick="addtrendscomment()">评论与回复</button>
+</body>
+<script language="javascript" type="text/javascript">
+    var app_id = 1
+    var user_id = 1
+    var device_id = 1
+    var timeoutObj = null
+    var serverTimeoutObj = null
+    var heart = true
+    var webSocketPingTime = 10000
+    var token = `cjkXpqj9jRGzm0IDcAHAan2x6FmJRcfupcthgkajCe4VBrmzxv5KJ90PuYSTLd2geupYGdjnOFi5v2bffkO7ks+CCzbxyA8wZTMjbxGfXejSKM6jQssKjBW/GqKMYiJ+Ke6qlxYcYiljNC40wXtFPateC0unijGyonUZNX0POU0=`
+
+    var Receive = {
+        addtrend: function(datas) {
+        },
+        addtrendscomment: function(datas) {
+        },
+        thumb: function(datas) {
+        },
+        gettrends: function(datas) {
+            var messageDate = proto.pb.GetTrendsResp.deserializeBinary(datas);
+            for (var i = 0; i < messageDate.getTrendsList().length; i++) {
+                var Examine = messageDate.getTrendsList()[i]
+                console.log("动态id:", Examine.getId())
+                console.log("动态作者id:", Examine.getUserId())
+                console.log("动态作者昵称:", Examine.getNickname())
+                console.log("动态内容:", Examine.getWriting())
+                console.log("动态图片:", Examine.getImgs())
+                console.log("动态视频:", Examine.getVideos())
+                console.log("动态创建时间:", Examine.getCreateTime())
+                console.log("动态更新时间:", Examine.getUpdateTime())
+                console.log("点赞数:", Examine.getThumbNum())
+                console.log("评论数:", Examine.getCommentNum())
+                console.log("评论回复列表:", Examine.getTrendsCommentList())
+                for (var j = 0; j < Examine.getTrendsCommentList().length; j++) {
+                    var comments = Examine.getTrendsCommentList()[j]
+                    console.log("评论id:", comments.getId())
+                    console.log("动态id:", comments.getTrendsId())
+                    console.log("回复id:", comments.getReplyId())
+                    console.log("发布人id:", comments.getUserId())
+                    console.log("发布人昵称:", comments.getNickname())
+                    console.log("创建时间:", comments.getCreateTime())
+                    console.log("评论内容:", comments.getWriting())
+                    console.log("评论类型:", comments.getIstype()) // 1 评论动态 2 回复
+                    if (comments.getIstype() == 2) {
+                        console.log("被回复人昵称:", comments.getReplyNickname())
+                        console.log("被回复人头像:", comments.getReplyAvatar())
+                        console.log("被回复人备注:", comments.getReplyRemark())
+                    }
+                }
+                console.log("点赞列表:", Examine.getTrendsThumbList())
+                for (var j = 0; j < Examine.getTrendsThumbList().length; j++) {
+                    var comments = Examine.getTrendsThumbList()[j]
+                }
+            }
+        },
+    }
+
+    init()
+
+    function init() {
+        WebSockets = new WebSocket(`ws://127.0.0.1:9091/ws`);
+
+        WebSockets.onopen = () => {
+            console.log("open")
+            Sign()
+            webSocketPing()
+            WebSockets.binaryType = 'arraybuffer';
+            WebSockets.onmessage = function (evt) {
+                var uarray = new Uint8Array(evt.data);
+                var message = proto.pb.Output.deserializeBinary(uarray);
+                console.log("message type:", message.getType());
+                console.log("message code:", message.getCode());
+                console.log("message msg:", message.getMessage());
+                if (message.getType() == "heartbeat") {
+                    webSocketPing()
+                } else {
+                    Receive[message.getType()](message.getData())
+                }
+            };
+        },
+
+        // 发生错误
+        WebSockets.onerror = function(event) {
+            console.log("Connected to WebSocket server error");
+            clearTimeout(timeoutObj);
+            clearTimeout(serverTimeoutObj);
+            reconnect()
+        },
+
+        //连接关闭
+        WebSockets.onclose = function(event) {
+            console.log('WebSocket Connection Closed.');
+            clearTimeout(timeoutObj);
+            clearTimeout(serverTimeoutObj);
+            reconnect()
+        }   
+    }
+
+    // 登录
+    function Sign() {
+        var input = new proto.pb.Input();
+        input.setType("sign");
+
+        var auth = new proto.pb.Auth();
+        auth.setAppId(app_id)
+        auth.setUserId(user_id)
+        auth.setDeviceId(device_id)
+        auth.setToken(token)
+
+        input.addAuth(auth);
+        var input_Bin = input.serializeBinary();
+
+        var inputmessage = proto.pb.Input.deserializeBinary(input_Bin);
+        WebSockets.send(input_Bin);
+    }
+
+    // 发朋友圈
+    function addtrend() {
+        var input = new proto.pb.Input();
+        input.setType("addtrend");
+
+        var AddTrend = new proto.pb.AddTrend();
+        AddTrend.setUserId(1)
+        AddTrend.setWriting("动态文字")
+
+        var message_Bin = AddTrend.serializeBinary();
+        input.setData(message_Bin);
+
+        var auth = new proto.pb.Auth();
+        auth.setAppId(app_id)
+        auth.setUserId(user_id)
+        auth.setDeviceId(device_id)
+        auth.setToken(token)
+
+        input.addAuth(auth);
+        var input_Bin = input.serializeBinary();
+
+        var inputmessage = proto.pb.Input.deserializeBinary(input_Bin);
+        WebSockets.send(input_Bin);
+    }
+
+    // 评论与回复
+    function addtrendscomment() {
+        var input = new proto.pb.Input();
+        input.setType("addtrendscomment");
+
+        var AddTrendsComment = new proto.pb.AddTrendsComment();
+        AddTrendsComment.setTrendsId(106)
+        AddTrendsComment.setIstype(1) // 1 评论动态 2 回复
+        AddTrendsComment.setWriting("评论文字")
+
+        var message_Bin = AddTrendsComment.serializeBinary();
+        input.setData(message_Bin);
+
+        var auth = new proto.pb.Auth();
+        auth.setAppId(app_id)
+        auth.setUserId(user_id)
+        auth.setDeviceId(device_id)
+        auth.setToken(token)
+
+        input.addAuth(auth);
+        var input_Bin = input.serializeBinary();
+
+        var inputmessage = proto.pb.Input.deserializeBinary(input_Bin);
+        WebSockets.send(input_Bin);
+    }
+
+    // 点赞与取消点赞
+    function thumb() {
+        var input = new proto.pb.Input();
+        input.setType("thumb");
+
+        var Thumb = new proto.pb.Thumb();
+        Thumb.setTrendsId(106)
+        Thumb.setType(0)
+
+        var message_Bin = Thumb.serializeBinary();
+        input.setData(message_Bin);
+
+        var auth = new proto.pb.Auth();
+        auth.setAppId(app_id)
+        auth.setUserId(user_id)
+        auth.setDeviceId(device_id)
+        auth.setToken(token)
+
+        input.addAuth(auth);
+        var input_Bin = input.serializeBinary();
+
+        var inputmessage = proto.pb.Input.deserializeBinary(input_Bin);
+        WebSockets.send(input_Bin);
+    }
+
+    // 获取朋友圈列表
+    function gettrends() {
+        var input = new proto.pb.Input();
+        input.setType("gettrends");
+
+        var GetTrendsReq = new proto.pb.GetTrendsReq();
+        GetTrendsReq.setLimit(15)
+        GetTrendsReq.setOffset(0)
+
+        var message_Bin = GetTrendsReq.serializeBinary();
+        input.setData(message_Bin);
+
+        var auth = new proto.pb.Auth();
+        auth.setAppId(app_id)
+        auth.setUserId(user_id)
+        auth.setDeviceId(device_id)
+        auth.setToken(token)
+
+        input.addAuth(auth);
+        var input_Bin = input.serializeBinary();
+
+        var inputmessage = proto.pb.Input.deserializeBinary(input_Bin);
+        WebSockets.send(input_Bin);
+    }
+
+    // 心跳
+    function send_heartbeat() {
+        var input = new proto.pb.Input();
+        input.setType("heartbeat");
+
+        var auth = new proto.pb.Auth();
+        auth.setAppId(app_id)
+        auth.setUserId(user_id)
+        auth.setDeviceId(device_id)
+        auth.setToken(token)
+
+        input.addAuth(auth);
+        var input_Bin = input.serializeBinary();
+
+        WebSockets.send(input_Bin);
+    }
+
+    // 发送心跳
+    function webSocketPing() {
+        clearTimeout(timeoutObj);
+        clearTimeout(serverTimeoutObj);
+        timeoutObj = setTimeout(() => {
+            send_heartbeat()
+            // 重新执行
+            webSocketPing();
+            heart = false
+
+            serverTimeoutObj = setTimeout(() => {// 如果超过一定时间还没重置，说明连接已经断开了
+                WebSockets.close()
+            }, webSocketPingTime);
+
+        }, webSocketPingTime);
+    }
+
+    // 重连
+    function reconnect() {
+        tt = setTimeout(() => {
+            init()
+        }, 10000);
+    }
+</script>
+</html>

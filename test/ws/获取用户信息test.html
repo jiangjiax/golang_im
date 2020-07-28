@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-sGcale=1.0">
+    <script src="./client_message.js"></script>
+    <title>获取用户信息</title>
+</head>
+<body>
+    <button onclick="GetUserInfo()">获取用户信息</button>
+</body>
+<script language="javascript" type="text/javascript">
+    var app_id = 1
+    var user_id = 1
+    var device_id = 1
+    var timeoutObj = null
+    var serverTimeoutObj = null
+    var heart = true
+    var webSocketPingTime = 10000
+    var token = `O1dD9WLDsuDy0PmczkDmlQbaxO4LWTG5XpgjNbSL4jSsyjTuOSdy3GW/KVLqHRrTq5cGpCVDnK7nb/YFfbbOv4vKkCXRkqq4gBWEkesb3U6ZfZSxmZ+baGp+e6dFcQWFpkt+ZnP31ks2tmMJHPs4aMj377JoC1t5ztyGHfsLC34=`
+
+    var Receive = {
+        getuserinfo: function(datas) {
+            // 未读数量
+            var messageDate = proto.pb.GetUserInfoResp.deserializeBinary(datas);
+            console.log("user_id:", messageDate.getUserId())
+            console.log("nickname:", messageDate.getNickname())
+            console.log("sex:", messageDate.getSex())
+            console.log("avatar_url:", messageDate.getAvatarUrl())
+            console.log("sign:", messageDate.getSign())
+            console.log("account:", messageDate.getAccount())
+        },
+    }
+
+    init()
+
+    function init() {
+        WebSockets = new WebSocket(`ws://192.168.1.21:9091/ws`);
+
+        WebSockets.onopen = () => {
+            console.log("open")
+            Sign()
+            webSocketPing()
+            WebSockets.binaryType = 'arraybuffer';
+            WebSockets.onmessage = function (evt) {
+                var uarray = new Uint8Array(evt.data);
+                var message = proto.pb.Output.deserializeBinary(uarray);
+                console.log("message type:", message.getType());
+                console.log("message code:", message.getCode());
+                console.log("message msg:", message.getMessage());
+                if (message.getType() == "heartbeat") {
+                    webSocketPing()
+                } else {
+                    Receive[message.getType()](message.getData())
+                }
+            };
+        },
+
+        // 发生错误
+        WebSockets.onerror = function(event) {
+            console.log("Connected to WebSocket server error");
+            clearTimeout(timeoutObj);
+            clearTimeout(serverTimeoutObj);
+            reconnect()
+        },
+
+        //连接关闭
+        WebSockets.onclose = function(event) {
+            console.log('WebSocket Connection Closed.');
+            clearTimeout(timeoutObj);
+            clearTimeout(serverTimeoutObj);
+            reconnect()
+        }   
+    }
+
+    // 登录
+    function Sign() {
+        var input = new proto.pb.Input();
+        input.setType("sign");
+
+        var auth = new proto.pb.Auth();
+        auth.setAppId(app_id)
+        auth.setUserId(user_id)
+        auth.setDeviceId(device_id)
+        auth.setToken(token)
+
+        input.addAuth(auth);
+        var input_Bin = input.serializeBinary();
+
+        var inputmessage = proto.pb.Input.deserializeBinary(input_Bin);
+        WebSockets.send(input_Bin);
+    }
+
+    // 获取用户信息
+    function GetUserInfo() {
+        var input = new proto.pb.Input();
+        input.setType("getuserinfo");
+
+        var auth = new proto.pb.Auth();
+        auth.setAppId(app_id)
+        auth.setUserId(user_id)
+        auth.setDeviceId(device_id)
+        auth.setToken(token)
+
+        input.addAuth(auth);
+        var input_Bin = input.serializeBinary();
+
+        var inputmessage = proto.pb.Input.deserializeBinary(input_Bin);
+        WebSockets.send(input_Bin);
+    }
+
+    // 心跳
+    function send_heartbeat() {
+        var input = new proto.pb.Input();
+        input.setType("heartbeat");
+
+        var auth = new proto.pb.Auth();
+        auth.setAppId(app_id)
+        auth.setUserId(user_id)
+        auth.setDeviceId(device_id)
+        auth.setToken(token)
+
+        input.addAuth(auth);
+        var input_Bin = input.serializeBinary();
+
+        WebSockets.send(input_Bin);
+    }
+
+    // 发送心跳
+    function webSocketPing() {
+        clearTimeout(timeoutObj);
+        clearTimeout(serverTimeoutObj);
+        timeoutObj = setTimeout(() => {
+            send_heartbeat()
+            // 重新执行
+            webSocketPing();
+            heart = false
+
+            serverTimeoutObj = setTimeout(() => {// 如果超过一定时间还没重置，说明连接已经断开了
+                WebSockets.close()
+            }, webSocketPingTime);
+
+        }, webSocketPingTime);
+    }
+
+    // 重连
+    function reconnect() {
+        tt = setTimeout(() => {
+            init()
+        }, 10000);
+    }
+</script>
+</html>

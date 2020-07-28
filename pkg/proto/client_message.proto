@@ -1,0 +1,392 @@
+syntax = "proto3";
+package pb;
+
+// 上行数据
+message Input {
+    string type = 1; // 包的类型
+    bytes data = 2; // 数据
+    repeated Auth auth = 3;
+}
+
+// 下行数据
+message Output {
+    string type = 1; // 包的类型
+    int32 code = 2; // 错误码
+    string message = 3; // 错误信息
+    bytes data = 4; // 数据
+}
+
+// 权限判断
+message Auth {
+    int64 app_id = 1; // app_id
+    int64 device_id = 2; // 设备id
+    int64 user_id = 3; // 用户id
+    string token = 4; // 秘钥
+}
+
+// 获取用户信息
+message GetUserInfoReq {
+    int64 user_id = 1;
+}
+message GetUserInfoResp {
+    int64 user_id = 1;
+    string nickname = 2;
+    int32 sex = 3; // 性别 0 未知 1 男 2 女
+    string avatar_url = 4;
+    string sign = 5;
+    string account = 6;
+}
+
+// 登录
+message SignRep {
+    int64 app_id = 1; // app_id
+    int64 device_id = 2; // 设备id
+    int64 user_id = 3; // 用户id
+    string token = 4; // 秘钥
+}
+
+// 发送消息
+message SendMessage {
+    int32 sender_type = 1; // 发送者类型: 1 系统 2 用户 3 第三方业务系统
+    int64 sender_id = 2; // 发送者id
+    int64 sender_device_id = 3; // 发送者设备id
+    int32 receiver_type = 4; // 接收者类型: 1 user 2 group
+    int64 receiver_id = 5; // 用户id或者群组id
+    repeated int64 to_user_ids = 6; // 需要@的用户id列表
+    MessageBody message_body = 7; // 消息体
+    int64 send_time = 8; // 消息发送时间戳，精确到毫秒
+    int32 status = 9; // 消息状态 1 未知的 2 正常的 3 撤回
+    string sender_name = 10; // 发送者昵称
+    string sender_avatar = 11; // 发送者头像
+    int32 help = 12; // 1 普通消息 2 客服消息
+}
+
+// 消息体
+message MessageBody {
+    MessageType message_type = 1; // 消息类型
+    MessageContent message_content = 2; // 消息内容
+}
+
+// 消息类型
+enum MessageType {
+    MT_UNKNOWN = 0; // 未知
+    MT_TEXT = 1; // 文本
+    MT_FACE = 2; // 表情
+    MT_VOICE = 3; // 语音消息
+    MT_IMAGE = 4; // 图片
+    MT_FILE = 5; // 文件
+    MT_LOCATION = 6; // 地理位置
+    MT_COMMAND = 7; // 指令推送
+    MT_CUSTOM = 8; // 自定义
+    MT_VIDEO = 9; // 视频
+}
+
+// 消息内容，MessageType：1
+message MessageContent {
+    oneof content {
+        Text text = 1; // 文本
+        Face face = 2; // 表情
+        Voice voice = 3; // 语音消息
+        Image image = 4; // 图片
+        File file = 5; // 文件
+        Location location = 6; // 地理位置
+        Command command = 7; // 指令
+        Custom custom = 8; // 自定义消息类型数据
+        Video video = 9; // 视频
+    }
+}
+
+// 文本消息
+message Text {
+    string text = 1; // 文本消息内容
+}
+
+// 表情消息
+message Face {
+    int64 face_id = 1;
+    string face_url = 2;
+}
+
+// 语音消息
+message Voice {
+    string id = 1; // 语音包id
+    int32 size = 2; // 语音包大小
+    int32 duration = 3; // 语音时长
+    string url = 4; // 语音文件URL
+}
+
+// 视频消息
+message Video {
+    string id = 1; // 视频id
+    int32 size = 2; // 视频大小
+    int32 duration = 3; // 视频时长
+    string url = 4; // 视频文件URL
+}
+
+// 图片消息
+message Image {
+    string id = 1; // 图片id
+    int32 width = 2; // 图片宽度
+    int32 height = 3; // 图片长度
+    string url = 4; // 图片URL
+    string thumbnail_url = 5; // 图片缩略图url
+}
+
+// 文件消息
+message File {
+    int64 id = 12; // 文件id
+    string name = 13; // 文件名
+    int64 size = 14; // 文件大小
+    string url = 15; // 文件url
+}
+
+// 地理位置消息
+message Location {
+    string desc = 1; // 描述
+    double latitude = 2; // 经度
+    double longitude = 3; // 纬度
+}
+
+// 指令推送
+message Command {
+    int32 code = 1; // 指令码
+    bytes data = 2; // 数据内容
+}
+
+// 自定义消息
+message Custom {
+    string data = 1; // 自定义数据
+}
+
+// 回执
+message MessageRead {
+    int64 message_id = 1; // 消息id
+}
+
+// 会话列表
+message ConversationReq {
+    int64 limit = 1; // 每页的数量
+    int64 offset = 2; // 页码
+}
+
+// 会话返回
+message ConversationResp {
+    repeated ConversationItem conversation = 1;
+}
+
+// 会话 
+message ConversationItem {
+    int64 id = 1; // 会话id
+    int64 sender_id = 2; // 发送者账户id
+    int64 receiver_id = 3; // 接收者id 如果是单聊信息则为user_id 如果是群组消息则为group_id
+    int32 receiver_type = 4; // 接收者类型 1 个人 2 群组
+    int64 update_time = 5; // 创建时间
+    int32 top = 6; // 2 置顶
+    int32 disturb = 7; // 2 免打扰
+    string username = 8; // 接收人昵称(群名)
+    string messagenewcontent = 9; // 最新的一条消息的内容
+    string remark = 10; // 备注
+    int64 receive_num = 11; // 未读数量
+    int32 help = 12; // 不等于0 客服
+    string sender_name = 13; // 发送人昵称
+    string avatar_url = 14;
+}
+
+// 根据会话id获取消息
+message SyncReq {
+    int64 limit = 1; // 每页的数量
+    int64 offset = 2; // 页码
+    int64 conversation_id = 3; // 会话id
+    int32 receiver_type = 4; // 接收者类型 1 user 2 group
+}
+message SyncResp {
+    repeated MessageItem messages = 1; // 消息列表
+}
+
+// 单条消息投递内容
+message MessageItem {
+    int32 sender_type = 1; // 发送者类型 1 系统 2 用户 3 第三方业务系统
+    int64 sender_id = 2; // 发送者id
+    int32 receiver_type = 3; // 接收者类型 1 user 2 group
+    int64 receiver_id = 4; // 用户id或者群组id
+    repeated int64 to_user_ids = 5; // 需要@的用户id列表
+    MessageBody message_body = 6; // 消息体
+    int64 send_time = 7; // 消息发送时间戳，精确到毫秒
+    int32 status = 8; // 消息状态 0 未处理 1 消息撤回 2 删除
+    string sender_name = 9; // 发送者昵称
+    string sender_avatar = 10; // 发送者头像
+    int64 conversation_id = 11; // 会话id
+    int32 help = 12; // 1 普通消息 2 客服消息
+    int64 id = 13; // 消息id
+    string conversation_message = 14; // 消息内容字符串
+}
+
+// 查找群组内的所有用户
+message GroupUserReq {
+    int64 group_id = 1; // 群组id
+    int64 limit = 2; // 每页的数量
+    int64 offset = 3; // 页码
+    int32 type = 4; // 1 群成员 2 群管理 3 群主
+}
+message GroupUserResp {
+    repeated GroupUser group_user = 1;
+}
+
+// 群组用户
+message GroupUser {
+    int64 group_id = 1; // 群组id
+    int64 user_id = 2; // 用户id
+    int32 type = 3; // 1 群成员 2 群管理 3 群主
+    string label = 4; // 用户在群组的昵称
+    int64 examine_time = 5; // 请求时间
+    int32 examine = 6; // 0 等待中 1 同意请求 2 拒绝请求
+    string examinetext = 7; // 请求文字
+    int64 is_read = 8; // 群组用户消息索引
+    string avatar_url = 9;
+}
+
+// 发送好友/加群请求
+message AddExamine {
+    int64 fid = 1; // 好友/群的id
+    string remark = 2; // 备注
+    int32 way = 3; // 1 扫码 2 搜索手机号 3 搜索昵称 4 ID号 5 接受好友请求
+    string examinetext = 4; // 好友请求文字
+    int32 type = 5; // 1 好友请求 2 加群请求
+    int32 examine = 6; // 0 等待中 1 同意请求 2 拒绝请求
+}
+
+// 获取好友/加群请求
+message GetExamineReq {
+    int64 limit = 1; // 每页的数量
+    int64 offset = 2; // 页码
+}
+message GetExamines {
+    repeated GetExamine examine = 1;
+}
+message GetExamine {
+    int64 fid = 1; // 好友/群的id
+    string remark = 2; // 备注
+    int32 way = 3; // 1 扫码 2 搜索手机号 3 搜索昵称 4 ID号 5 接受好友请求
+    string examinetext = 4; // 好友请求文字
+    int32 type = 5; // 1 好友请求 2 加群请求
+    int64 user_id = 6; // 发送请求的人id
+    int32 is_read = 7; // 0 未读 1 已读
+    string avatar_url = 8; // 头像
+    string nickname = 9;
+    int64 id = 10;
+    int64 examine_time = 11; // 请求时间
+    int32 examine = 12; // 0 等待中 1 同意请求 2 拒绝请求
+}
+
+// 处理好友/加群请求
+message UpExamineReq {
+    int32 type = 1; // 1 好友请求 2 加群请求
+    int64 fid = 2; // 好友/群的id
+    int32 examine = 3; // 1 同意 2 拒绝
+    int64 user_id = 4; // 发送请求的人id
+}
+
+// 好友/加群请求未读数
+message ReadNumResp {
+    int64 num = 1;
+}
+
+// 发朋友圈
+message AddTrend {
+    int64 user_id = 1; // 发送人
+    string writing = 2; // 动态文字
+    string imgs = 3; // 图片
+    string videos = 4; // 视频
+    string to_user_ids = 5; // 需要@的用户id列表，多个用户用，隔开
+}
+
+// 获取朋友圈列表
+message GetTrendsReq {
+    int64 limit = 1; // 每页的数量
+    int64 offset = 2; // 页码
+}
+message GetTrendsResp {
+    repeated Trends trends = 1;
+}
+message Trends {
+    int64 user_id = 1; // 发送人
+    string writing = 2; // 动态文字
+    string imgs = 3; // 图片
+    string videos = 4; // 视频
+    int64 thumb_num = 5; // 点赞数
+    int64 relay_num = 6; // 转发数
+    int64 comment_num = 7; // 评论数
+    repeated TrendsComment trends_comment = 9; // 评论列表
+    repeated TrendThumb trends_thumb = 10; // 点赞列表
+    string nickname = 11; // 动态发布人昵称
+    string avatar_url = 12; // 动态发布人头像
+    int64 create_time = 13; // 创建时间
+    int64 update_time = 14; // 更新时间
+    int64 id = 15;
+}
+
+// 朋友圈评论
+message TrendsComment {
+    int64 trends_id = 1; // 动态id
+    int64 reply_id = 2; // 回复人id（看istype，如果是评论动态就存这条动态的发送人的id，如果是回复就存被回复的人的id）
+    int64 comment_id = 3; // 回复的评论的id
+    int64 user_id = 4; // 发送人id
+    string writing = 5; // 评论文字
+    int32 istype = 6; // 1 评论动态 2 回复
+    string nickname = 7; // 昵称
+    string avatar_url = 8; // 头像
+    int64 create_time = 9; // 创建时间
+    int64 update_time = 10; // 更新时间
+    string reply_nickname = 11; // 被回复人的昵称
+    string reply_avatar_url = 12; // 被回复人的头像
+    int64 id = 13;
+}
+
+// 朋友圈点赞
+message TrendThumb {
+    int64 trends_id = 1; // 动态id
+    int64 reply_id = 2; // 发布动态的人id
+    int64 user_id = 3; // 操作者id
+    string nickname = 4; // 昵称
+    string avatar_url = 5; // 头像
+    int64 create_time = 6; // 创建时间
+    int64 update_time = 7; // 更新时间
+    int64 id = 8;
+}
+
+// 点赞与取消点赞
+message Thumb {
+    int64 trends_id = 1; // 动态id
+    int32 type = 2; // 0 点赞 1 取消点赞
+}
+
+// 评论与回复
+message AddTrendsComment {
+    int64 trends_id = 1; // 动态id
+    int32 istype = 2; // 1 评论动态 2 回复
+    int64 comment_id = 3; // 回复的评论的id
+    int64 user_id = 4; // 发送人id
+    string writing = 5; // 评论文字
+}
+
+// 创建会话（发起聊天） 发送
+message AddConversationReq {
+    int64 user_id = 1; // 要聊的人/群
+    int32 type = 2; // 要聊的人 1 人 2 群
+}
+// 接收
+message AddConversationResp {
+    int64 conversation_id = 1; // 会话id
+}
+
+message SystemMessageResp {
+    int64 err_code = 1; // 200 ok
+    string err_msg = 2; // 错误信息
+}
+
+// -----------------------------------
+
+service Greeter {
+    // 再会话中添加一条系统消息
+    rpc SystemMsgByConversation (SendMessage) returns (SystemMessageResp) {}
+}

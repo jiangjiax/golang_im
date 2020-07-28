@@ -1,0 +1,9 @@
+{"L":"ERROR","T":"2020-07-07T14:10:06.780+0800","C":"internal_ws/ctx_conn.go:42","M":"接收失败:websocket: close 1001 (going away)"}
+{"L":"ERROR","T":"2020-07-07T14:10:21.974+0800","C":"internal_ws/ctx_conn.go:42","M":"接收失败:websocket: close 1001 (going away)"}
+{"L":"ERROR","T":"2020-07-07T14:10:58.080+0800","C":"internal_ws/ctx_conn.go:42","M":"接收失败:websocket: close 1001 (going away)"}
+{"L":"ERROR","T":"2020-07-07T14:11:53.819+0800","C":"internal_ws/ctx_conn.go:42","M":"接收失败:websocket: close 1001 (going away)"}
+{"L":"ERROR","T":"2020-07-07T14:12:03.574+0800","C":"internal_ws/ctx_conn.go:42","M":"接收失败:websocket: close 1001 (going away)"}
+{"L":"ERROR","T":"2020-07-07T14:12:10.235+0800","C":"internal_ws/ctx_conn.go:42","M":"接收失败:websocket: close 1001 (going away)"}
+{"L":"ERROR","T":"2020-07-07T14:12:15.999+0800","C":"internal_ws/ctx_conn.go:42","M":"接收失败:websocket: close 1001 (going away)"}
+{"L":"ERROR","T":"2020-07-07T14:13:16.023+0800","C":"internal_ws/ctx_conn.go:42","M":"接收失败:read tcp 192.168.1.21:9091->192.168.1.21:61867: i/o timeout"}
+{"L":"ERROR","T":"2020-07-07T14:33:28.756+0800","C":"internal_ws/ctx_conn.go:42","M":"接收失败:websocket: close 1001 (going away)"}
