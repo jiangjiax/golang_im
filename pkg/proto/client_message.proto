@@ -384,6 +384,13 @@ message SystemMessageResp {
     string err_msg = 2; // 错误信息
 }
 
+// 会话设置
+message ConversationSettingReq {
+    int32 disturb = 1; // 2 免打扰
+    int32 top = 2; // 2 置顶
+    int64 conversation_id = 3; // 会话id
+}
+
 // -----------------------------------
 
 service Greeter {

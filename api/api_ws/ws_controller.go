@@ -50,10 +50,12 @@ func chat_Controller() {
 	internal_ws.Controllers["chatreadnum"] = WsServiceChat.ChatReadNum
 	// 发起聊天 [已测试]
 	internal_ws.Controllers["addconversation"] = WsServiceChat.AddConversation
+	// 会话置顶
+	internal_ws.Controllers["upconversation"] = WsServiceChat.UpConversation
+	// 会话免打扰
+	internal_ws.Controllers["disturbconversation"] = WsServiceChat.DisturbConversation
 
 	// [以下接口下次补充]
-	// 会话置顶
-	// 会话免打扰
 	// 聊天信息删除
 	// 聊天信息撤回
 	// 获取客服

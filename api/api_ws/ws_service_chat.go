@@ -156,3 +156,35 @@ func (*wsServiceChat) AddConversation(auth *pb.Auth, data []byte) {
 		return
 	}
 }
+
+// 会话置顶
+func (*wsServiceChat) UpConversation(auth *pb.Auth, data []byte) {
+	var in pb.ConversationSettingReq
+	err := proto.Unmarshal(data, &in)
+	if err != nil {
+		log.Warn(err)
+		return
+	}
+
+	conn, err := WsDaoChat.UpConversation(&in, auth)
+	if err != nil {
+		conn.WriteMSG("upconversation", err, nil)
+		return
+	}
+}
+
+// 会话免打扰
+func (*wsServiceChat) DisturbConversation(auth *pb.Auth, data []byte) {
+	var in pb.ConversationSettingReq
+	err := proto.Unmarshal(data, &in)
+	if err != nil {
+		log.Warn(err)
+		return
+	}
+
+	conn, err := WsDaoChat.DisturbConversation(&in, auth)
+	if err != nil {
+		conn.WriteMSG("disturbconversation", err, nil)
+		return
+	}
+}

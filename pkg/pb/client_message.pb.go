@@ -3583,6 +3583,108 @@ func (x *SystemMessageResp) GetErrMsg() string {
 	return ""
 }
 
+// 会话设置
+type ConversationSettingReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Disturb        int32 `protobuf:"varint,1,opt,name=disturb,proto3" json:"disturb,omitempty"`                                     // 2 免打扰
+	Top            int32 `protobuf:"varint,2,opt,name=top,proto3" json:"top,omitempty"`                                             // 2 置顶
+	ConversationId int64 `protobuf:"varint,3,opt,name=conversation_id,json=conversationId,proto3" json:"conversation_id,omitempty"` // 会话id
+}
+
+func (x *ConversationSettingReq) Reset() {
+	*x = ConversationSettingReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_client_message_proto_msgTypes[45]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ConversationSettingReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ConversationSettingReq) ProtoMessage() {}
+
+func (x *ConversationSettingReq) ProtoReflect() protoreflect.Message {
+	mi := &file_client_message_proto_msgTypes[45]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ConversationSettingReq.ProtoReflect.Descriptor instead.
+func (*ConversationSettingReq) Descriptor() ([]byte, []int) {
+	return file_client_message_proto_rawDescGZIP(), []int{45}
+}
+
+func (x *ConversationSettingReq) GetDisturb() int32 {
+	if x != nil {
+		return x.Disturb
+	}
+	return 0
+}
+
+func (x *ConversationSettingReq) GetTop() int32 {
+	if x != nil {
+		return x.Top
+	}
+	return 0
+}
+
+func (x *ConversationSettingReq) GetConversationId() int64 {
+	if x != nil {
+		return x.ConversationId
+	}
+	return 0
+}
+
+type ConversationSettingResp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *ConversationSettingResp) Reset() {
+	*x = ConversationSettingResp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_client_message_proto_msgTypes[46]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ConversationSettingResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ConversationSettingResp) ProtoMessage() {}
+
+func (x *ConversationSettingResp) ProtoReflect() protoreflect.Message {
+	mi := &file_client_message_proto_msgTypes[46]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ConversationSettingResp.ProtoReflect.Descriptor instead.
+func (*ConversationSettingResp) Descriptor() ([]byte, []int) {
+	return file_client_message_proto_rawDescGZIP(), []int{46}
+}
+
 var File_client_message_proto protoreflect.FileDescriptor
 
 var file_client_message_proto_rawDesc = []byte{
@@ -3985,22 +4087,31 @@ var file_client_message_proto_rawDesc = []byte{
 	0x12, 0x19, 0x0a, 0x08, 0x65, 0x72, 0x72, 0x5f, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01,
 	0x28, 0x03, 0x52, 0x07, 0x65, 0x72, 0x72, 0x43, 0x6f, 0x64, 0x65, 0x12, 0x17, 0x0a, 0x07, 0x65,
 	0x72, 0x72, 0x5f, 0x6d, 0x73, 0x67, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x65, 0x72,
-	0x72, 0x4d, 0x73, 0x67, 0x2a, 0x9e, 0x01, 0x0a, 0x0b, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65,
-	0x54, 0x79, 0x70, 0x65, 0x12, 0x0e, 0x0a, 0x0a, 0x4d, 0x54, 0x5f, 0x55, 0x4e, 0x4b, 0x4e, 0x4f,
-	0x57, 0x4e, 0x10, 0x00, 0x12, 0x0b, 0x0a, 0x07, 0x4d, 0x54, 0x5f, 0x54, 0x45, 0x58, 0x54, 0x10,
-	0x01, 0x12, 0x0b, 0x0a, 0x07, 0x4d, 0x54, 0x5f, 0x46, 0x41, 0x43, 0x45, 0x10, 0x02, 0x12, 0x0c,
-	0x0a, 0x08, 0x4d, 0x54, 0x5f, 0x56, 0x4f, 0x49, 0x43, 0x45, 0x10, 0x03, 0x12, 0x0c, 0x0a, 0x08,
-	0x4d, 0x54, 0x5f, 0x49, 0x4d, 0x41, 0x47, 0x45, 0x10, 0x04, 0x12, 0x0b, 0x0a, 0x07, 0x4d, 0x54,
-	0x5f, 0x46, 0x49, 0x4c, 0x45, 0x10, 0x05, 0x12, 0x0f, 0x0a, 0x0b, 0x4d, 0x54, 0x5f, 0x4c, 0x4f,
-	0x43, 0x41, 0x54, 0x49, 0x4f, 0x4e, 0x10, 0x06, 0x12, 0x0e, 0x0a, 0x0a, 0x4d, 0x54, 0x5f, 0x43,
-	0x4f, 0x4d, 0x4d, 0x41, 0x4e, 0x44, 0x10, 0x07, 0x12, 0x0d, 0x0a, 0x09, 0x4d, 0x54, 0x5f, 0x43,
-	0x55, 0x53, 0x54, 0x4f, 0x4d, 0x10, 0x08, 0x12, 0x0c, 0x0a, 0x08, 0x4d, 0x54, 0x5f, 0x56, 0x49,
-	0x44, 0x45, 0x4f, 0x10, 0x09, 0x32, 0x4e, 0x0a, 0x07, 0x47, 0x72, 0x65, 0x65, 0x74, 0x65, 0x72,
-	0x12, 0x43, 0x0a, 0x17, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x4d, 0x73, 0x67, 0x42, 0x79, 0x43,
-	0x6f, 0x6e, 0x76, 0x65, 0x72, 0x73, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x0f, 0x2e, 0x70, 0x62,
-	0x2e, 0x53, 0x65, 0x6e, 0x64, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x1a, 0x15, 0x2e, 0x70,
-	0x62, 0x2e, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x52,
-	0x65, 0x73, 0x70, 0x22, 0x00, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x72, 0x4d, 0x73, 0x67, 0x22, 0x6d, 0x0a, 0x16, 0x43, 0x6f, 0x6e, 0x76, 0x65, 0x72, 0x73, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x74, 0x74, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x71, 0x12, 0x18,
+	0x0a, 0x07, 0x64, 0x69, 0x73, 0x74, 0x75, 0x72, 0x62, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52,
+	0x07, 0x64, 0x69, 0x73, 0x74, 0x75, 0x72, 0x62, 0x12, 0x10, 0x0a, 0x03, 0x74, 0x6f, 0x70, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x03, 0x74, 0x6f, 0x70, 0x12, 0x27, 0x0a, 0x0f, 0x63, 0x6f,
+	0x6e, 0x76, 0x65, 0x72, 0x73, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20,
+	0x01, 0x28, 0x03, 0x52, 0x0e, 0x63, 0x6f, 0x6e, 0x76, 0x65, 0x72, 0x73, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x49, 0x64, 0x22, 0x19, 0x0a, 0x17, 0x43, 0x6f, 0x6e, 0x76, 0x65, 0x72, 0x73, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x53, 0x65, 0x74, 0x74, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x73, 0x70, 0x2a, 0x9e,
+	0x01, 0x0a, 0x0b, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x54, 0x79, 0x70, 0x65, 0x12, 0x0e,
+	0x0a, 0x0a, 0x4d, 0x54, 0x5f, 0x55, 0x4e, 0x4b, 0x4e, 0x4f, 0x57, 0x4e, 0x10, 0x00, 0x12, 0x0b,
+	0x0a, 0x07, 0x4d, 0x54, 0x5f, 0x54, 0x45, 0x58, 0x54, 0x10, 0x01, 0x12, 0x0b, 0x0a, 0x07, 0x4d,
+	0x54, 0x5f, 0x46, 0x41, 0x43, 0x45, 0x10, 0x02, 0x12, 0x0c, 0x0a, 0x08, 0x4d, 0x54, 0x5f, 0x56,
+	0x4f, 0x49, 0x43, 0x45, 0x10, 0x03, 0x12, 0x0c, 0x0a, 0x08, 0x4d, 0x54, 0x5f, 0x49, 0x4d, 0x41,
+	0x47, 0x45, 0x10, 0x04, 0x12, 0x0b, 0x0a, 0x07, 0x4d, 0x54, 0x5f, 0x46, 0x49, 0x4c, 0x45, 0x10,
+	0x05, 0x12, 0x0f, 0x0a, 0x0b, 0x4d, 0x54, 0x5f, 0x4c, 0x4f, 0x43, 0x41, 0x54, 0x49, 0x4f, 0x4e,
+	0x10, 0x06, 0x12, 0x0e, 0x0a, 0x0a, 0x4d, 0x54, 0x5f, 0x43, 0x4f, 0x4d, 0x4d, 0x41, 0x4e, 0x44,
+	0x10, 0x07, 0x12, 0x0d, 0x0a, 0x09, 0x4d, 0x54, 0x5f, 0x43, 0x55, 0x53, 0x54, 0x4f, 0x4d, 0x10,
+	0x08, 0x12, 0x0c, 0x0a, 0x08, 0x4d, 0x54, 0x5f, 0x56, 0x49, 0x44, 0x45, 0x4f, 0x10, 0x09, 0x32,
+	0x4e, 0x0a, 0x07, 0x47, 0x72, 0x65, 0x65, 0x74, 0x65, 0x72, 0x12, 0x43, 0x0a, 0x17, 0x53, 0x79,
+	0x73, 0x74, 0x65, 0x6d, 0x4d, 0x73, 0x67, 0x42, 0x79, 0x43, 0x6f, 0x6e, 0x76, 0x65, 0x72, 0x73,
+	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x0f, 0x2e, 0x70, 0x62, 0x2e, 0x53, 0x65, 0x6e, 0x64, 0x4d,
+	0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x1a, 0x15, 0x2e, 0x70, 0x62, 0x2e, 0x53, 0x79, 0x73, 0x74,
+	0x65, 0x6d, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x22, 0x00, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -4016,54 +4127,56 @@ func file_client_message_proto_rawDescGZIP() []byte {
 }
 
 var file_client_message_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_client_message_proto_msgTypes = make([]protoimpl.MessageInfo, 45)
+var file_client_message_proto_msgTypes = make([]protoimpl.MessageInfo, 47)
 var file_client_message_proto_goTypes = []interface{}{
-	(MessageType)(0),            // 0: pb.MessageType
-	(*Input)(nil),               // 1: pb.Input
-	(*Output)(nil),              // 2: pb.Output
-	(*Auth)(nil),                // 3: pb.Auth
-	(*GetUserInfoReq)(nil),      // 4: pb.GetUserInfoReq
-	(*GetUserInfoResp)(nil),     // 5: pb.GetUserInfoResp
-	(*SignRep)(nil),             // 6: pb.SignRep
-	(*SendMessage)(nil),         // 7: pb.SendMessage
-	(*MessageBody)(nil),         // 8: pb.MessageBody
-	(*MessageContent)(nil),      // 9: pb.MessageContent
-	(*Text)(nil),                // 10: pb.Text
-	(*Face)(nil),                // 11: pb.Face
-	(*Voice)(nil),               // 12: pb.Voice
-	(*Video)(nil),               // 13: pb.Video
-	(*Image)(nil),               // 14: pb.Image
-	(*File)(nil),                // 15: pb.File
-	(*Location)(nil),            // 16: pb.Location
-	(*Command)(nil),             // 17: pb.Command
-	(*Custom)(nil),              // 18: pb.Custom
-	(*MessageRead)(nil),         // 19: pb.MessageRead
-	(*ConversationReq)(nil),     // 20: pb.ConversationReq
-	(*ConversationResp)(nil),    // 21: pb.ConversationResp
-	(*ConversationItem)(nil),    // 22: pb.ConversationItem
-	(*SyncReq)(nil),             // 23: pb.SyncReq
-	(*SyncResp)(nil),            // 24: pb.SyncResp
-	(*MessageItem)(nil),         // 25: pb.MessageItem
-	(*GroupUserReq)(nil),        // 26: pb.GroupUserReq
-	(*GroupUserResp)(nil),       // 27: pb.GroupUserResp
-	(*GroupUser)(nil),           // 28: pb.GroupUser
-	(*AddExamine)(nil),          // 29: pb.AddExamine
-	(*GetExamineReq)(nil),       // 30: pb.GetExamineReq
-	(*GetExamines)(nil),         // 31: pb.GetExamines
-	(*GetExamine)(nil),          // 32: pb.GetExamine
-	(*UpExamineReq)(nil),        // 33: pb.UpExamineReq
-	(*ReadNumResp)(nil),         // 34: pb.ReadNumResp
-	(*AddTrend)(nil),            // 35: pb.AddTrend
-	(*GetTrendsReq)(nil),        // 36: pb.GetTrendsReq
-	(*GetTrendsResp)(nil),       // 37: pb.GetTrendsResp
-	(*Trends)(nil),              // 38: pb.Trends
-	(*TrendsComment)(nil),       // 39: pb.TrendsComment
-	(*TrendThumb)(nil),          // 40: pb.TrendThumb
-	(*Thumb)(nil),               // 41: pb.Thumb
-	(*AddTrendsComment)(nil),    // 42: pb.AddTrendsComment
-	(*AddConversationReq)(nil),  // 43: pb.AddConversationReq
-	(*AddConversationResp)(nil), // 44: pb.AddConversationResp
-	(*SystemMessageResp)(nil),   // 45: pb.SystemMessageResp
+	(MessageType)(0),                // 0: pb.MessageType
+	(*Input)(nil),                   // 1: pb.Input
+	(*Output)(nil),                  // 2: pb.Output
+	(*Auth)(nil),                    // 3: pb.Auth
+	(*GetUserInfoReq)(nil),          // 4: pb.GetUserInfoReq
+	(*GetUserInfoResp)(nil),         // 5: pb.GetUserInfoResp
+	(*SignRep)(nil),                 // 6: pb.SignRep
+	(*SendMessage)(nil),             // 7: pb.SendMessage
+	(*MessageBody)(nil),             // 8: pb.MessageBody
+	(*MessageContent)(nil),          // 9: pb.MessageContent
+	(*Text)(nil),                    // 10: pb.Text
+	(*Face)(nil),                    // 11: pb.Face
+	(*Voice)(nil),                   // 12: pb.Voice
+	(*Video)(nil),                   // 13: pb.Video
+	(*Image)(nil),                   // 14: pb.Image
+	(*File)(nil),                    // 15: pb.File
+	(*Location)(nil),                // 16: pb.Location
+	(*Command)(nil),                 // 17: pb.Command
+	(*Custom)(nil),                  // 18: pb.Custom
+	(*MessageRead)(nil),             // 19: pb.MessageRead
+	(*ConversationReq)(nil),         // 20: pb.ConversationReq
+	(*ConversationResp)(nil),        // 21: pb.ConversationResp
+	(*ConversationItem)(nil),        // 22: pb.ConversationItem
+	(*SyncReq)(nil),                 // 23: pb.SyncReq
+	(*SyncResp)(nil),                // 24: pb.SyncResp
+	(*MessageItem)(nil),             // 25: pb.MessageItem
+	(*GroupUserReq)(nil),            // 26: pb.GroupUserReq
+	(*GroupUserResp)(nil),           // 27: pb.GroupUserResp
+	(*GroupUser)(nil),               // 28: pb.GroupUser
+	(*AddExamine)(nil),              // 29: pb.AddExamine
+	(*GetExamineReq)(nil),           // 30: pb.GetExamineReq
+	(*GetExamines)(nil),             // 31: pb.GetExamines
+	(*GetExamine)(nil),              // 32: pb.GetExamine
+	(*UpExamineReq)(nil),            // 33: pb.UpExamineReq
+	(*ReadNumResp)(nil),             // 34: pb.ReadNumResp
+	(*AddTrend)(nil),                // 35: pb.AddTrend
+	(*GetTrendsReq)(nil),            // 36: pb.GetTrendsReq
+	(*GetTrendsResp)(nil),           // 37: pb.GetTrendsResp
+	(*Trends)(nil),                  // 38: pb.Trends
+	(*TrendsComment)(nil),           // 39: pb.TrendsComment
+	(*TrendThumb)(nil),              // 40: pb.TrendThumb
+	(*Thumb)(nil),                   // 41: pb.Thumb
+	(*AddTrendsComment)(nil),        // 42: pb.AddTrendsComment
+	(*AddConversationReq)(nil),      // 43: pb.AddConversationReq
+	(*AddConversationResp)(nil),     // 44: pb.AddConversationResp
+	(*SystemMessageResp)(nil),       // 45: pb.SystemMessageResp
+	(*ConversationSettingReq)(nil),  // 46: pb.ConversationSettingReq
+	(*ConversationSettingResp)(nil), // 47: pb.ConversationSettingResp
 }
 var file_client_message_proto_depIdxs = []int32{
 	3,  // 0: pb.Input.auth:type_name -> pb.Auth
@@ -4642,6 +4755,30 @@ func file_client_message_proto_init() {
 				return nil
 			}
 		}
+		file_client_message_proto_msgTypes[45].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ConversationSettingReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_client_message_proto_msgTypes[46].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ConversationSettingResp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	file_client_message_proto_msgTypes[8].OneofWrappers = []interface{}{
 		(*MessageContent_Text)(nil),
@@ -4660,7 +4797,7 @@ func file_client_message_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_client_message_proto_rawDesc,
 			NumEnums:      1,
-			NumMessages:   45,
+			NumMessages:   47,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

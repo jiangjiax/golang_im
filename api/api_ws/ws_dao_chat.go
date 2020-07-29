@@ -1011,3 +1011,39 @@ func (*wsDaoChat) ChatReadNum(auth *pb.Auth) (*internal_ws.WSConn, error) {
 	conn.WriteMSG("chatreadnum", nil, msgBytes)
 	return conn, nil
 }
+
+// 会话置顶
+func (*wsDaoChat) UpConversation(in *pb.ConversationSettingReq, auth *pb.Auth) (*internal_ws.WSConn, error) {
+	conn := internal_ws.Load(auth.DeviceId)
+	if conn == nil {
+		return conn, gerrors.ErrUnDeviceid
+	}
+
+	sql_str := `update im_conversation set top = ? where id = ? and user_id = ? and app_id = ?`
+	_, err := db.DBCli.Exec(sql_str, in.Top, in.ConversationId, auth.UserId, auth.AppId)
+	if err != nil {
+		log.Error(err)
+		return conn, err
+	}
+
+	conn.WriteMSG("upconversation", nil, nil)
+	return conn, nil
+}
+
+// 会话免打扰
+func (*wsDaoChat) DisturbConversation(in *pb.ConversationSettingReq, auth *pb.Auth) (*internal_ws.WSConn, error) {
+	conn := internal_ws.Load(auth.DeviceId)
+	if conn == nil {
+		return conn, gerrors.ErrUnDeviceid
+	}
+
+	sql_str := `update im_conversation set disturb = ? where id = ? and user_id = ? and app_id = ?`
+	_, err := db.DBCli.Exec(sql_str, in.Disturb, in.ConversationId, auth.UserId, auth.AppId)
+	if err != nil {
+		log.Error(err)
+		return conn, err
+	}
+
+	conn.WriteMSG("disturbconversation", nil, nil)
+	return conn, nil
+}
