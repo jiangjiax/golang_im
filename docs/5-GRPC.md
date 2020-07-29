@@ -210,6 +210,8 @@ func auth(ctx context.Context) error {
 }
 ```
 
+---
+
 ## 编写GRPC客户端代码进行测试
 
 ### 编写GRPC客户端代码
