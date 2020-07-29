@@ -45,7 +45,6 @@ func main() {
 }
 
 func getCtx() context.Context {
-	// token, _ := util.GetToken(1, 2, 3, time.Now().Add(1*time.Hour).Unix(), util.PublicKey)
 	return metadata.NewOutgoingContext(context.TODO(), metadata.Pairs(
 		"app_id", "1",
 		"user_id", "1",

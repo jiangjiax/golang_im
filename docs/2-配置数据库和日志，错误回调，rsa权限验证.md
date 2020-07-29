@@ -1,6 +1,6 @@
 ## 配置数据库和日志
 
-#### 配置数据库
+### 配置数据库
 
 在 pkg/db 目录下新建 mysql.go 文件，用于连接 mysql 数据库：（sql文件已放在sql目录下了）
 
@@ -56,7 +56,7 @@ func Redis_init() {
 }
 ```
 
-#### 配置日志zap
+### 配置日志zap
 
 zap 是 uber 开源的高性能日志库。我们将在 pkg/log 下新建 log.go 用于控制日志：
 
@@ -216,7 +216,7 @@ func newError(code int, message string) error {
 
 ## rsa权限验证
 
-#### 获取rsa密钥
+### 获取rsa密钥
 
 rsa 是目前使用最广泛的公钥密码体制之一，我们使用 rsa 对用户权限做验证。首先需要生成 rsa 公钥和私钥文件，可以使用以下 Go 代码生成：
 
@@ -280,7 +280,7 @@ func GenRsaKey(bits int) error {
 
 执行 go run main.go 后，得到 private.pem 和 public.pem 文件，文件内分别是私钥和公钥密码。
 
-#### 编写rsa加解密工具函数
+### 编写rsa加解密工具函数
 
 在 pkg/util 目录下新建 rsa.go 文件：
 

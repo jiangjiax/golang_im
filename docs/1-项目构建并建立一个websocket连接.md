@@ -1,6 +1,6 @@
 ## 项目构建
 
-#### 项目需求
+### 项目需求
 
 使用 Golang 完成一个即时通讯服务器，支持功能：
 1. 支持前端 websocket 接入
@@ -10,13 +10,13 @@
 5. 支持单聊，群聊，朋友圈
 6. 可扩展
 
-#### 使用技术
+### 使用技术
 
 数据库：Mysql+Redis
 通讯：GRPC+Protobuf
 语言：Golang
 
-#### 目录结构
+### 目录结构
 
 - api: 服务对外提供的接口
     - api_grpc: grpc接口
@@ -40,7 +40,7 @@
 - test: 测试脚本
 - docs: 文档
 
-#### 环境配置
+### 环境配置
 创建文件：
 
 conf.go
@@ -122,7 +122,7 @@ func initDevConf() {
 
 ## 建立一个websocket连接
 
-#### websocket服务器
+### websocket服务器
 
 在目录 internal/ws 下创建文件 server.go 用于配置 websocket 的路由：
 
@@ -280,7 +280,7 @@ func main() {
 
 在目录下执行 go run main.go 即可启动服务。
 
-#### websocket客户端
+### websocket客户端
 
 在目录 test/ws 下创建 index.html 用于测试 websocket 服务器：
 

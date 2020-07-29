@@ -1,6 +1,6 @@
 ## 配置Protobuf
 
-#### 编写proto文件
+### 编写proto文件
 
 Protobuf可以将编写的proto文件转变为其他语言可以使用的协议，可以作为设计安全的跨语言RPC接口的基础工具。
 proto文件中最基本的数据单元是message，是类似Go语言中结构体的存在。在message中可以嵌套message或其他的基础数据类型的成员。
@@ -50,7 +50,7 @@ message GetUserInfoResp {
 
 client_message.proto 文件里定义了很多 message，进入项目查看全部的：https://github.com/jiangjiax/golang_im
 
-#### 编译proto文件
+### 编译proto文件
 
 安装编译工具 protoc，然后使用以下命令将 proto 文件编译为 Go 语言可以使用的协议：
 
@@ -71,11 +71,12 @@ $ protoc --js_out=import_style=commonjs,binary:./ *.proto
 # 将编译好的js文件转换为浏览器可以直接使用的js文件
 $ browserify client_message_pb.js -o client_message.js
 ```
+
 ---
 
 ## 编写Websocket接口
 
-#### 管理用户建立的连接
+### 管理用户建立的连接
 
 在 internal/internal_ws 目录下新建 manager.go 文件，使用数据结构 sync.Map 管理用户建立的连接，sync.Map 是一个有读写锁机制的 Map 结构：
 
@@ -104,10 +105,9 @@ func Load(deviceId int64) *WSConn {
 func Delete(deviceId int64) {
 	manager.Delete(deviceId)
 }
-
 ```
 
-#### 心跳
+### 心跳
 
 在 internal/internal_ws/ctx_conn.go 文件的 DoConn() 函数中加入调用接口的代码：
 
@@ -252,7 +252,7 @@ func (c *WSConn) WriteMSG(pt string, err error, msgBytes []byte) {
 }
 ```
 
-#### 登录&设备在线/离线的设置
+### 登录&设备在线/离线的设置
 
 登录的接口我直接在 internal/internal_ws/ctx_conn.go 文件中写了，不放到 Controllers 中，先在 DoConn() 方法中判断：
 
@@ -354,7 +354,7 @@ func (c *WSConn) Release() {
 }
 ```
 
-#### 获取用户信息
+### 获取用户信息
 
 更改 api/api_ws/ws_controller.go 文件，添加一个获取用户信息的接口：
 
