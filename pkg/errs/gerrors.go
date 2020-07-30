@@ -6,8 +6,9 @@ import (
 )
 
 var (
-	ErrUnauthorized = newError(1, "未登录")
-	ErrUnDeviceid   = newError(2, "无设备")
+	ErrUnauthorized      = newError(1, "未登录")
+	ErrUnDeviceid        = newError(2, "无设备")
+	ErrGroupAlreadyExist = newError(3, "群组已经存在")
 )
 
 func newError(code int, message string) error {

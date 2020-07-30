@@ -375,7 +375,7 @@ func (*wsDaoChat) Send(in *pb.SendMessage, auth *pb.Auth, toUserId int64) error 
 	}
 	selfConversation := pb.ConversationItem{
 		SenderId:          in.SenderId,
-		ReceiverType:      MessageType,
+		ReceiverType:      in.ReceiverType,
 		ReceiverId:        in.ReceiverId,
 		Messagenewcontent: ConversationMessage,
 		Help:              in.Help,

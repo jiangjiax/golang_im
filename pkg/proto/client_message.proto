@@ -391,6 +391,49 @@ message ConversationSettingReq {
     int64 conversation_id = 3; // 会话id
 }
 
+// 群
+message Group {
+    int64 group_id = 1; // 群组id
+    string name = 2; // 名称
+    string introduction = 3; // 简介
+    int32 user_mum = 4; // 用户数
+    int32 type = 5; // 群组类型
+    string extra = 6; // 附加字段
+    int64 create_time = 7; // 创建时间
+    int64 update_time = 8; // 更新时间
+    int32 privacy = 9; // 1 公开群 2 隐私群
+    string avatar = 10; // 群头像
+    string userIds = 11; // 群员ID
+    int32 way = 12; // 1 直接创建  2 面对面
+    double coordinatex = 13; // 坐标x
+    double coordinatey = 14; // 坐标y
+    string commandword = 15; // 面对面建群口令
+    int64 nums = 16; // 群成员数量
+    int32 user_type = 17; // 1 群成员 2 群管理 3 群主
+    int32 ban = 18; // 群聊邀请确认 1 不接受邀请请求
+}
+// 创建群组
+message CreateGroupReq {
+    Group group = 1;
+    int64 lastInsertID = 2;
+}
+message CreateGroupResp {
+    int64 conversation_lastInsertID = 1; // 会话id
+    int64 group_lastInsertID = 2; // 群id
+}
+
+// 将用户添加到群组
+message AddUserbyGroup {
+    int64 group_id = 1;
+    int64 user_id = 2;
+    int32 istype = 3; // 1 群成员 2 群管理 3 群主
+    string label = 4;
+    int32 examine = 5; // 0 等待中 1 同意请求 2 拒绝请求
+    string examinetext = 6;
+    int64 is_read = 7;
+    int32 way = 8; // 1 扫码 2 搜索手机号 3 搜索昵称 4 ID号 5 接受加群请求 6 做为群主 7 被邀请
+}
+
 // -----------------------------------
 
 service Greeter {

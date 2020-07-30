@@ -64,9 +64,10 @@ func chat_Controller() {
 
 // 群组
 func group_Controller() {
+	// 创建群组
+	internal_ws.Controllers["creatgroup"] = WsServiceGroup.CreatGroup
 
 	// [以下接口下次补充]
-	// 创建群组
 	// 更新群组（群头像，群名）
 	// 删除群组
 	// 获取用户加入的所有群组
