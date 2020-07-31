@@ -990,9 +990,9 @@ func (*wsDaoChat) ChatReadNum(auth *pb.Auth) (*internal_ws.WSConn, error) {
 	select count(*)
 	from im_message as m 
 	left join im_group_user as gu on gu.user_id = ? and gu.group_id = m.receiver_id 
-	left join im_conversation as c on c.user_id = ? and c.receiver_type = 2 
-	where m.app_id = ? and m.receiver_type = 2 and c.status = 0 and gu.status = 0 and 
-	m.receiver_id in (select group_id from im_group_user as g where g.user_id = ? and g.app_id = m.app_id) 
+	left join im_conversation as c on c.user_id = ? and c.receiver_type = 2 and c.receiver_id = gu.group_id
+	where m.app_id = ? and m.receiver_type = 2 and c.status = 0 and gu.status = 0 
+	and m.receiver_id in (select group_id from im_group_user as g where g.user_id = ? and g.app_id = m.app_id and g.status = 0) 
 	and m.status != 2 and m.status != 1 and m.id > gu.is_read and gu.examine = 1 and gu.status = 0 group by m.id`
 	err = db.DBCli.QueryRow(sql_str, auth.UserId, auth.UserId, auth.AppId, auth.UserId).
 		Scan(&all_num)
