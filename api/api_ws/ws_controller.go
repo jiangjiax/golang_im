@@ -66,11 +66,14 @@ func chat_Controller() {
 func group_Controller() {
 	// 创建群组
 	internal_ws.Controllers["creatgroup"] = WsServiceGroup.CreatGroup
+	// 更新群组
+	internal_ws.Controllers["upgroup"] = WsServiceGroup.UpGroup
+	// 删除群组
+	internal_ws.Controllers["delgroup"] = WsServiceGroup.DelGroup
+	// 获取用户加入的所有群组
+	internal_ws.Controllers["groupbyuser"] = WsServiceGroup.GroupByUser
 
 	// [以下接口下次补充]
-	// 更新群组（群头像，群名）
-	// 删除群组
-	// 获取用户加入的所有群组
 	// 转让群主
 	// 更新群组成员信息（改名）
 	// 更新群组成员信息（改权限）

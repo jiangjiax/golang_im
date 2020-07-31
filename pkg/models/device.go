@@ -17,3 +17,28 @@ type Device struct {
 	Identification string    `json:"identification"` // 唯一标识
 	Id             int64     `json:"id"`
 }
+
+// Group 群组
+type Group struct {
+	Id           int64     `json:"id"`
+	AppId        int64     `json:"app_id"`   // appId
+	GroupId      int64     `json:"group_id"` // 群组id
+	UserId       int64     `json:"user_id"`
+	DeviceId     int64     `json:"device_id"`
+	Name         string    `json:"name"`         // 组名
+	Introduction string    `json:"introduction"` // 群简介
+	UserNum      int32     `json:"user_num"`     // 群组人数
+	Type         int32     `json:"type"`         // 群组类型
+	Privacy      int32     `json:"privacy"`      // 1 公开群 2 隐私群
+	Avatar       string    `json:"avatar"`       // 头像
+	Extra        string    `json:"extra"`        // 附加属性
+	CreateTime   time.Time `json:"create_time"`  // 创建时间
+	UpdateTime   time.Time `json:"update_time"`  // 更新时间
+	Way          int32     `json:"way"`
+	Coordinatex  float64   `json:"coordinatex"`
+	Coordinatey  float64   `json:"coordinatey"`
+	Commandword  string    `json:"commandword"`
+	UserType     int32     `json:"user_type"` // 1 群成员 2 群管理 3 群主
+	Label        string    `json:"label"`
+	Ban          int32     `json:"ban"` // 群聊邀请确认 1 不接受邀请请求
+}

@@ -1047,3 +1047,14 @@ func (*wsDaoChat) DisturbConversation(in *pb.ConversationSettingReq, auth *pb.Au
 	conn.WriteMSG("disturbconversation", nil, nil)
 	return conn, nil
 }
+
+// 删除群组会话
+func (*wsDaoChat) DeleteConversationGroup(appId, receiverId int64) error {
+	sql_str := `update im_conversation set status = 1 where receiver_id = ? and receiver_type = 2 and app_id = ?`
+	_, err := db.DBCli.Exec(sql_str, receiverId, appId)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

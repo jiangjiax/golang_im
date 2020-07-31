@@ -434,6 +434,19 @@ message AddUserbyGroup {
     int32 way = 8; // 1 扫码 2 搜索手机号 3 搜索昵称 4 ID号 5 接受加群请求 6 做为群主 7 被邀请
 }
 
+// 删除群组
+message DeleteGroupReq {
+    int64 group_id = 1; // 群组id
+}
+
+// 获取用户加入的所有群组
+message GetUserGroupsReq {
+    int32 type = 1; // 0 我加入的所有群 1 我管理的群 2 我做为群成员的群
+}
+message GetUserGroupsResp {
+    repeated Group groups = 1;
+}
+
 // -----------------------------------
 
 service Greeter {
