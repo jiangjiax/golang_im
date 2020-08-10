@@ -447,6 +447,33 @@ message GetUserGroupsResp {
     repeated Group groups = 1;
 }
 
+// 获取好友列表
+message GetFriendListReq {
+    int64 user_id = 1; // 用户id
+    int64 app_id = 2;
+    string keyword = 3; // 搜索关键字
+}
+message GetFriendListResp {
+    repeated FriendItem friends = 1;
+}
+
+// 好友项
+message FriendItem {
+    int64 f_id = 1; // 好友id
+    int64 user_id = 2; // 用户id
+    string remark = 3; // 备注
+    int64 create_time = 4; // 创建时间
+    int64 update_time = 5; // 更新时间
+    int64 app_id = 6;
+    string avatar_url = 7; // 头像
+    int32 status = 8;
+    int32 way = 9;
+    int32 examine = 10;
+    string examinetext = 11;
+    string nickname = 12;
+    int32 groupstatus = 13; // 1 未加群 2 已加群
+}
+
 // -----------------------------------
 
 service Greeter {

@@ -88,12 +88,13 @@ func group_Controller() {
 
 // 好友
 func friend_Controller() {
-
-	// [以下接口下次补充]
 	// 获取好友列表
+	internal_ws.Controllers["getfriends"] = WsServiceFriend.GetFriendList
 	// 搜索好友
 	// 更新好友备注
 	// 删除好友
+
+	// [以下接口下次补充]
 	// 拉黑和取消拉黑
 }
 
