@@ -1058,3 +1058,32 @@ func (*wsDaoChat) DeleteConversationGroup(appId, receiverId int64) error {
 
 	return nil
 }
+
+// 删除好友会话
+func (*wsDaoChat) DeleteConversationFriend(appId, fid, userId int64) error {
+	// 将会话改为删除
+	sql_str := `update im_conversation set status = 1 where receiver_id = ? and receiver_type = 1 and app_id = ? and user_id = ?`
+	_, err := db.DBCli.Exec(sql_str, fid, appId, userId)
+	if err != nil {
+		log.Error(err)
+		return err
+	}
+	// 查找会话的id
+	sql_str = `SELECT id from im_conversation where receiver_id = ? and receiver_type = 1 and app_id = ? and user_id = ?`
+	row := db.DBCli.QueryRow(sql_str, fid, appId, userId)
+	var lastInsertID int
+	err = row.Scan(&lastInsertID)
+	if err != nil && err != sql.ErrNoRows {
+		log.Error(err)
+		return err
+	}
+	// 将消息设置为已读
+	_, err = db.DBCli.Exec("update `message` set isread = 1 where app_id = ? and conversation_id = ?",
+		appId, lastInsertID)
+	if err != nil {
+		log.Error(err)
+		return err
+	}
+
+	return nil
+}

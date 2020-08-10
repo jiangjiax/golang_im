@@ -91,8 +91,11 @@ func friend_Controller() {
 	// 获取好友列表
 	internal_ws.Controllers["getfriends"] = WsServiceFriend.GetFriendList
 	// 搜索好友
+	internal_ws.Controllers["searchfriends"] = WsServiceFriend.SearchFriendList
 	// 更新好友备注
+	internal_ws.Controllers["upremarkfriend"] = WsServiceFriend.UpRemarkFriend
 	// 删除好友
+	internal_ws.Controllers["deletefriend"] = WsServiceFriend.DeleteFriend
 
 	// [以下接口下次补充]
 	// 拉黑和取消拉黑

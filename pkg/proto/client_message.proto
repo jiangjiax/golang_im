@@ -474,6 +474,17 @@ message FriendItem {
     int32 groupstatus = 13; // 1 未加群 2 已加群
 }
 
+// 添加好友
+message AddFriendReq {
+    FriendItem friends = 1;
+}
+
+// 删除好友
+message DeleteFriendReq {
+    int64 user_id = 1;
+    int64 f_id = 2;
+}
+
 // -----------------------------------
 
 service Greeter {
