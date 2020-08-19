@@ -142,6 +142,6 @@ func (*wsDaoFriend) DeleteFriend(in *pb.DeleteFriendReq, auth *pb.Auth) (*intern
 		return conn, err
 	}
 
-	conn.WriteMSG("upremarkfriend", nil, nil)
+	conn.WriteMSG("deletefriend", nil, nil)
 	return conn, nil
 }
